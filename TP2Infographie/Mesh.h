@@ -24,10 +24,12 @@ public:
 	Mesh();
 	~Mesh();
 
-	void init(GLuint numVerts, GLfloat* vertices, GLfloat* colours, GLfloat* normals, GLfloat* texcoords, GLuint indexCount, GLuint* indices);
-	void init(GLuint numVerts, GLfloat* vertices, GLfloat* colours, GLfloat* normals,GLfloat* texcoords);
-	void init(GLuint numVerts, GLfloat* vertices);
+	void init(GLuint numVerts, GLfloat* vertices, GLfloat* colours, GLfloat* normals, GLfloat* texcoords, GLuint indexCount, GLuint* indices, bool dynamic);
+	void init(GLuint numVerts, GLfloat* vertices, GLfloat* colours, GLfloat* normals,GLfloat* texcoords, bool dynamic);
+	void init(GLuint numVerts, GLfloat* vertices, bool dynamic);
 	void loadFromObjFile(const char* filename);
+	void createTorus(GLfloat maxRadius, GLfloat minRadius, GLuint nbPointsMax, GLuint nbPointsMin);
+
 	void draw();
 
 	GLuint getNumFaces(){return m_numFaces;}

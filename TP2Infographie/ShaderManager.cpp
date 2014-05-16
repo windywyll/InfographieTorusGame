@@ -43,6 +43,7 @@ GLuint ShaderManager::getShader(char *vertName,char *fragName)
 		s_existingsShaders.insert(map<GLuint,string>::value_type(newShader,shaderConcatenedName));
 		return newShader;
 	}
+	return 0;
 }
 
 bool ShaderManager::shaderExists(char *vertName,char *fragName)

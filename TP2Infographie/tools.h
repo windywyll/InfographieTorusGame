@@ -39,12 +39,12 @@ namespace tools
 	// Some methods for creating meshes
 	// ... including one for dealing with indexed meshes
 	GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, const GLfloat* normals,
-		const GLfloat* texcoords, const GLuint indexCount, const GLuint* indices);
+		const GLfloat* texcoords, const GLuint indexCount, const GLuint* indices, bool dynamic);
 	// these three create mesh functions simply provide more basic access to the full version
 	GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, const GLfloat* normals,
-		const GLfloat* texcoords);
-	GLuint createMesh(const GLuint numVerts, const GLfloat* vertices);
-	GLuint createColourMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours);
+		const GLfloat* texcoords, bool dynamic);
+	GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, bool dynamic);
+	GLuint createColourMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, bool dynamic);
 
 	void setUniformMatrix4fv(const GLuint program, const char* uniformName, const GLfloat *data);
 	void setMatrices(const GLuint program, const GLfloat *proj, const GLfloat *mv, const GLfloat *mvp);

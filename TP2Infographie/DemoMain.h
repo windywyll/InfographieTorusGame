@@ -60,6 +60,7 @@ private :
 	glm::mat4 m_view;
 	glm::mat4 m_projection;
 
+	glm::vec3 m_playerPosition;
 	glm::vec3 m_playerLastPosition;
 	BaseMeshRenderer m_player;
 
@@ -68,6 +69,9 @@ private :
 	SkyBox m_sky;
 
 	Mesh m_playerMesh, m_cordeMesh;
+
+	GLfloat m_maxRadius, m_minRadius;
+	GLuint m_nbPointsMax, m_nbPointsMin;
 
 	//light
 	Light m_light;

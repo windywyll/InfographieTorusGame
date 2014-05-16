@@ -47,16 +47,12 @@ class AbstractMeshRenderer
 		void clearUniforms();
 
 		virtual void draw() = 0;
-
-		//collision detection
-		virtual bool isCollision(AbstractMeshRenderer &otherMesh);
-		virtual void calculateBoundingBox() = 0;
-
+		
 		virtual void calculateModelMatrix() = 0;
 
 		glm::vec3 getPosition(){return m_position;}
 		void setPosition(glm::vec3 position){ m_position = position;if(m_generatedModelMatrix) calculateModelMatrix();}
-		glm::vec3 getScale(){return m_scale; calculateBoundingBox();}
+		glm::vec3 getScale(){return m_scale;}
 		void setScale(glm::vec3 scale){ m_scale = scale;if(m_generatedModelMatrix) calculateModelMatrix();}
 		glm::vec3 getRotation(){return m_rotation;}
 		void setRotation(glm::vec3 rotation){m_rotation = rotation;if(m_generatedModelMatrix) calculateModelMatrix();}
@@ -65,10 +61,8 @@ class AbstractMeshRenderer
 		void setModelMatrix(glm::mat4 model){m_model = model; m_generatedModelMatrix = false;}
 		bool isGeneratedModelMatrix(){return m_generatedModelMatrix;}
 
-		bool detectCollision;
-
-		glm::vec3 getMinPoint(){return m_min;}
-		glm::vec3 getMaxPoint(){return m_max;}
+		glm::mat4 getViewMatrix(){return m_view;}
+		void setViewMatrix(glm::mat4 view){m_view = view;}
 
 	protected :
 		std::map<std::string,glm::mat4> m_uniformMat4;
@@ -78,14 +72,13 @@ class AbstractMeshRenderer
 		tools::materialStruct m_material;
 
 		glm::mat4 m_model;
+		glm::mat4 m_view;
 
 		glm::vec3 m_position;
 		glm::vec3 m_scale;
 		glm::vec3 m_rotation;
 
 		GLuint m_shaderProgram;
-
-		glm::vec3 m_max, m_min;
 
 		bool m_generatedModelMatrix;
 };

@@ -21,7 +21,7 @@ static map<GLuint, GLuint *> vertexArrayMap;
 // Something went wrong - print error message and quit
 void exitFatalError(const char *message)
 {
-    cout << message << " ";
+    cerr << message << " ";
     exit(1);
 }
 
@@ -45,7 +45,7 @@ char* loadFile(const char *fname, GLint &fSize) {
 		cout << "file " << fname << " loaded" << endl;
 	}
 	else {
-		cout << "Unable to open file " << fname << endl;
+		cerr << "Unable to open file " << fname << endl;
 		fSize = 0;
 		// should ideally set a flag or use exception handling
 		// so that calling function can decide what to do now
@@ -105,14 +105,14 @@ GLuint initShaders(const char *vertFile, const char *fragFile) {
 	glCompileShader(v);
 	glGetShaderiv(v, GL_COMPILE_STATUS, &compiled);
 	if (!compiled) {
-		cout << "Vertex shader not compiled." << endl;
+		cerr << "Vertex shader not compiled." << endl;
 		printShaderError(v);
 	}
 
 	glCompileShader(f);
 	glGetShaderiv(f, GL_COMPILE_STATUS, &compiled);
 	if (!compiled) {
-		cout << "Fragment shader not compiled." << endl;
+		cerr << "Fragment shader not compiled." << endl;
 		printShaderError(f);
 	}
 	
@@ -136,7 +136,7 @@ GLuint initShaders(const char *vertFile, const char *fragFile) {
 }
 
 GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, 
-	const GLfloat* normals, const GLfloat* texcoords, const GLuint indexCount, const GLuint* indices) {
+	const GLfloat* normals, const GLfloat* texcoords, const GLuint indexCount, const GLuint* indices, bool dynamic) {
 	GLuint VAO;
 	// generate and set up a VAO for the mesh
 	glGenVertexArrays(1, &VAO);
@@ -156,7 +156,10 @@ GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat*
 	
 	// VBO for vertex data
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), vertices, GL_STATIC_DRAW);
+	if (dynamic)
+		glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), vertices, GL_DYNAMIC_DRAW);
+	else
+		glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 	glVertexAttribPointer((GLuint)VERTEX, 3, GL_FLOAT, GL_FALSE, 0, 0); 
 	glEnableVertexAttribArray(VERTEX);
 	pMeshBuffers[VERTEX] = VBO;
@@ -166,7 +169,10 @@ GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat*
 	if (colours != nullptr) {
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), colours, GL_STATIC_DRAW);
+		if (dynamic)
+			glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), colours, GL_DYNAMIC_DRAW);
+		else
+			glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), colours, GL_STATIC_DRAW);
 		glVertexAttribPointer((GLuint)COLOUR, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(COLOUR);
 		pMeshBuffers[COLOUR] = VBO;
@@ -176,6 +182,9 @@ GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat*
 	if (normals != nullptr) {
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		if (dynamic)
+			glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), normals, GL_DYNAMIC_DRAW);
+		else
 		glBufferData(GL_ARRAY_BUFFER, 3*numVerts*sizeof(GLfloat), normals, GL_STATIC_DRAW);
 		glVertexAttribPointer((GLuint)NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(NORMAL);
@@ -186,7 +195,10 @@ GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat*
 	if (texcoords != nullptr) {
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, 2*numVerts*sizeof(GLfloat), texcoords, GL_STATIC_DRAW);
+		if (dynamic)
+			glBufferData(GL_ARRAY_BUFFER, 2*numVerts*sizeof(GLfloat), texcoords, GL_DYNAMIC_DRAW);
+		else
+			glBufferData(GL_ARRAY_BUFFER, 2*numVerts*sizeof(GLfloat), texcoords, GL_STATIC_DRAW);
 		glVertexAttribPointer((GLuint)TEXCOORD, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(TEXCOORD);
 		pMeshBuffers[TEXCOORD] = VBO;
@@ -195,7 +207,10 @@ GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat*
 	if (indices != nullptr && indexCount > 0) {
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(GLuint), indices, GL_STATIC_DRAW);
+		if (dynamic)
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(GLuint), indices, GL_DYNAMIC_DRAW);
+		else
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(GLuint), indices, GL_STATIC_DRAW);
 		pMeshBuffers[INDEX] = VBO;
 	}
 	// unbind vertex array
@@ -209,16 +224,16 @@ GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat*
 }
 
 GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, 
-	const GLfloat* normals, const GLfloat* texcoords) {
-	return createMesh(numVerts, vertices, colours, normals, texcoords, 0, nullptr);
+	const GLfloat* normals, const GLfloat* texcoords, bool dynamic) {
+	return createMesh(numVerts, vertices, colours, normals, texcoords, 0, nullptr, dynamic);
 }
 
-GLuint createMesh(const GLuint numVerts, const GLfloat* vertices) {
-	return createMesh(numVerts, vertices, nullptr, nullptr, nullptr);
+GLuint createMesh(const GLuint numVerts, const GLfloat* vertices, bool dynamic) {
+	return createMesh(numVerts, vertices, nullptr, nullptr, nullptr, dynamic);
 }
 
-GLuint createColourMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours) {
-	return createMesh(numVerts, vertices, colours, nullptr, nullptr);
+GLuint createColourMesh(const GLuint numVerts, const GLfloat* vertices, const GLfloat* colours, bool dynamic) {
+	return createMesh(numVerts, vertices, colours, nullptr, nullptr, dynamic);
 }
 
 void setUniformMatrix4fv(const GLuint program, const char* uniformName, const GLfloat *data) {
@@ -303,10 +318,10 @@ void updateMesh(const GLuint mesh, const unsigned int bufferType, const GLfloat 
 	glGenBuffers(1, &VBO);
 		// VBO for the data
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, size*sizeof(GLfloat), data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size*sizeof(GLfloat), data, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer((GLuint)bufferType, 3, GL_FLOAT, GL_FALSE, 0, 0); 
 	glEnableVertexAttribArray(bufferType);
-	pMeshBuffers[VERTEX] = VBO;
+	pMeshBuffers[bufferType] = VBO;
 
 	glBindVertexArray(0);
 }
