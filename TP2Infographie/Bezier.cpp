@@ -8,7 +8,7 @@ using namespace std;
 
 Bezier::Bezier()
 {
-	
+	m_lengthTabPtCircles ++;
 }
 
 
@@ -29,12 +29,12 @@ void Bezier::calcFragBezier(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::ve
 
 void Bezier::initBezierMesh()
 {
-	m_bezierCurve.init(m_lengthTabPtCircles, m_tabPointsCircles);
+	m_bezierCurve.init(m_lengthTabPtCircles, m_tabPointsCircles,nullptr,m_tabNormBezier,nullptr,m_lengthTabPtTriangle,m_tabSommetTrianglesTube,false);
 }
 
 void Bezier::draw()
 {
-
+	m_bezierCurve.draw();
 }
 
 void Bezier::calcCurve(string filename)
@@ -85,7 +85,11 @@ void Bezier::calcCircles(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 
 		m_tabPointsCircles[index+1] = ptCircle.y;
 		m_tabPointsCircles[index+2] = ptCircle.z;
 
-		m_lengthTabPtCircles ++;
+		glm::vec3 normale = ptCircle - *center;
+
+		m_tabNormBezier[index] = normale.x;
+		m_tabNormBezier[index+1] = normale.y;
+		m_tabNormBezier[index+2] = normale.z;
 	}
 }
 

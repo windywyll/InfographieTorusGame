@@ -17,6 +17,7 @@ class Bezier{
 		int m_nbPointsCircle;
 		GLuint m_lengthTabPtCircles;
 		GLfloat* m_tabPointsCircles;
+		GLfloat* m_tabNormBezier;
 		float m_RCircle;
 		GLuint* m_tabSommetTrianglesTube;
 		GLuint m_lengthTabPtTriangle;
