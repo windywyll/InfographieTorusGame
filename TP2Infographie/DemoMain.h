@@ -4,6 +4,7 @@
 #include "BaseMeshRenderer.h"
 #include "SkyBox.h"
 #include "Light.h"
+#include "Bezier.h"
 
 #include <ctime>
 #include <vector>
@@ -65,6 +66,7 @@ private :
 	BaseMeshRenderer m_player;
 
 	AbstractMeshRenderer *m_corde;
+	Bezier m_bezierCorde;
 
 	SkyBox m_sky;
 
