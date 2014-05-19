@@ -5,7 +5,7 @@ using namespace std;
 
 BaseMeshRenderer::BaseMeshRenderer()
 {
-	m_textureID= -1;
+	m_textureID = 0;
 }
 
 
@@ -43,12 +43,12 @@ void BaseMeshRenderer::draw()
 			uniformIndex = glGetUniformLocation(m_shaderProgram, it1f->first.c_str());
 			glUniform1f(uniformIndex, it1f->second);
 		}
-		glm::mat4 modelview = DemoMain::getInstance().getViewMatrix() * m_model;
+		glm::mat4 modelview = m_view * m_model;
 		tools::setUniformMatrix4fv(m_shaderProgram,"modelview", glm::value_ptr(modelview));
 		tools::setUniformMatrix4fv(m_shaderProgram,"projection", glm::value_ptr(DemoMain::getInstance().getProjectionMatrix()));
 		tools::setMaterial(m_shaderProgram, m_material);
 		//bind the texture
-		if(m_textureID != -1)
+		if(m_textureID != 0)
 			glBindTexture(GL_TEXTURE_2D, m_textureID);
 		//draw the mesh
 		m_mesh->draw();
@@ -65,48 +65,12 @@ void BaseMeshRenderer::setMesh(Mesh *mesh)
 	m_mesh = mesh;
 }
 
-void BaseMeshRenderer::calculateBoundingBox()
-{
-	float *vertices = m_mesh->getVertices();
-	for(unsigned int i = 0; i < m_mesh->getNumVertices(); i ++)
-	{
-		glm::vec4 currentVertex = glm::vec4(1.0f);
-		currentVertex.x = vertices[i*3];
-		currentVertex.y = vertices[i*3+1];
-		currentVertex.z = vertices[i*3+2];
-
-		currentVertex = m_model * currentVertex;
-
-		if(i == 0)
-		{
-			m_min.x = m_max.x = currentVertex.x;
-			m_min.y = m_max.y = currentVertex.y;
-			m_min.z = m_max.z = currentVertex.z;
-		}
-		else
-		{
-			if(currentVertex.x > m_max.x)
-				m_max.x = currentVertex.x;
-			if(currentVertex.y > m_max.y)
-				m_max.y = currentVertex.y;
-			if(currentVertex.z > m_max.z)
-				m_max.z = currentVertex.z;
-			if(currentVertex.x < m_min.x)
-				m_min.x = currentVertex.x;
-			if(currentVertex.y < m_min.y)
-				m_min.y = currentVertex.y;
-			if(currentVertex.z < m_min.z)
-				m_min.z = currentVertex.z;
-		}
-	}
-}
-
 void BaseMeshRenderer::calculateModelMatrix()
 {
 	m_model = glm::mat4(1.0f);
 	m_model = glm::translate(m_model,m_position);
-	m_model = glm::rotate(m_model,1.0f,m_rotation);
+	m_model = glm::rotate(m_model,m_rotation.x,glm::vec3(1.0f,0.0f,0.0f));
+	m_model = glm::rotate(m_model,m_rotation.y,glm::vec3(0.0f,1.0f,0.0f));
+	m_model = glm::rotate(m_model,m_rotation.z,glm::vec3(0.0f,0.0f,1.0f));
 	m_model = glm::scale(m_model,m_scale);
-	if(detectCollision)
-		calculateBoundingBox();
 }

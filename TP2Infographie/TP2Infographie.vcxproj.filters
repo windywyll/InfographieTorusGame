@@ -42,9 +42,11 @@
     <ClInclude Include="tools.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+
     <ClInclude Include="Light.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+
     <ClInclude Include="ObjLoader.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -80,9 +82,11 @@
     <ClCompile Include="tools.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+
     <ClCompile Include="Light.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+
     <ClCompile Include="ObjLoader.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>

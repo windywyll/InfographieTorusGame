@@ -130,7 +130,7 @@ void loadObj(const char* filename, std::vector<GLfloat> &verts, std::vector<GLfl
 
 	GLint a,b,c;
 
-	int i=0, iCount = 0;
+	int i = 0, iCount = 0;
 	position tmp;
 	std::map<std::string,GLuint> indexMap;
 	int fFormat = FORMAT_UNKNOWN;

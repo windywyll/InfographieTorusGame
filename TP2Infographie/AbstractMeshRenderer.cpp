@@ -10,7 +10,6 @@ AbstractMeshRenderer::AbstractMeshRenderer()
 	m_scale = glm::vec3(1.0f);
 	m_rotation = glm::vec3(0.0f);
 
-	detectCollision = true;
 	m_generatedModelMatrix = true;
 }
 
@@ -120,31 +119,4 @@ void AbstractMeshRenderer::deleteUniform(string name)
 void AbstractMeshRenderer::clearUniforms()
 {
 	m_uniformMat4.clear();
-}
-
-bool AbstractMeshRenderer::isCollision(AbstractMeshRenderer &otherMesh)
-{
-	if(detectCollision && otherMesh.detectCollision)
-	{
-		//we only test for collision of the side
-		if(m_min.x < otherMesh.m_max.x && m_min.x > otherMesh.m_min.x 
-			&& m_min.z < otherMesh.m_max.z && m_min.z > otherMesh.m_min.z
-		|| m_max.x < otherMesh.m_max.x && m_max.x > otherMesh.m_min.x
-			&& m_max.z < otherMesh.m_max.z && m_max.z > otherMesh.m_min.z
-		||otherMesh.m_min.x < m_max.x && otherMesh.m_min.x > m_min.x 
-			&& otherMesh.m_min.z < m_max.z && otherMesh.m_min.z > m_min.z
-		||otherMesh.m_max.x < m_max.x && otherMesh.m_max.x > m_min.x 
-			&& otherMesh.m_max.z < m_max.z && otherMesh.m_max.z > m_min.z
-		||m_min.x < otherMesh.m_max.x && m_min.x > otherMesh.m_min.x 
-			&& m_max.z < otherMesh.m_max.z && m_max.z > otherMesh.m_min.z
-		|| m_max.x < otherMesh.m_max.x && m_max.x > otherMesh.m_min.x
-			&& m_min.z < otherMesh.m_min.z && m_min.z > otherMesh.m_min.z
-		||otherMesh.m_min.x < m_max.x && otherMesh.m_min.x > m_min.x 
-			&& otherMesh.m_max.z < m_max.z && otherMesh.m_max.z > m_min.z
-		||otherMesh.m_max.x < m_max.x && otherMesh.m_max.x > m_min.x 
-			&& otherMesh.m_min.z < m_max.z && otherMesh.m_min.z > m_min.z)
-		return true;
-	return false;
-	}
-	return false;
 }

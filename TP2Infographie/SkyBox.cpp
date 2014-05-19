@@ -20,8 +20,8 @@ void SkyBox::init(char* texBottom, char* texTop,char* texLeft, char* texFront, c
 		0.0f,0.0f,
 	};
 	m_square = Mesh();
-	m_square.init(4, vertice, nullptr, nullptr, texCoord, 6, faces);
-
+	m_square.init(4, vertice, nullptr, nullptr, texCoord, 6, faces, false);
+	
 	//load each texture of the sky box and store their IDs
 	m_TexIDs[0] = TextureManager::getTexture(texBottom,false);
 	m_TexIDs[1] = TextureManager::getTexture(texTop,false);
@@ -63,8 +63,8 @@ void SkyBox::init(char* texBottom, char* texTop,char* texLeft, char* texFront, c
 void SkyBox::draw()
 {
 	tools::setUniformMatrix4fv(m_shaderID, "projection", glm::value_ptr(DemoMain::getInstance().getProjectionMatrix()));
+	
 	//get the rotation matrix only
-
 	glm::mat4 view = glm::mat4(glm::mat3(DemoMain::getInstance().getViewMatrix()));
 
 	glDepthMask(GL_FALSE); // make sure depth test is off
