@@ -117,7 +117,7 @@ void DemoMain::init()
 	m_nbPointsMax = 100;
 	m_nbPointsMin = 20;
 
-	m_cordeMesh.loadFromObjFile("Models//sphere.obj");
+	m_bezierCorde.calcCurve("Models//testBezier.txt");
 	m_playerMesh.createTorus(m_maxRadius,m_minRadius,m_nbPointsMax,m_nbPointsMin);
 
 	////////////////////////////////
@@ -130,7 +130,9 @@ void DemoMain::init()
 		{0.8f, 0.8f, 1.0f, 1.0f}, // specular
 		2.0f};  // shininess
 	
+	
 	m_corde = new BaseMeshRenderer();
+	m_cordeMesh = m_bezierCorde.initBezierMesh();
 	((BaseMeshRenderer*)m_corde)->setMesh(&m_cordeMesh);
 	m_corde->initShaders("colour.vert","colour.frag");
 	m_corde->setMaterial(material);
@@ -140,7 +142,6 @@ void DemoMain::init()
 	/////////
 	//PLAYER
 	/////////
-
 	
 	//create the player
 	
@@ -148,7 +149,9 @@ void DemoMain::init()
 	m_player.initShaders("colour.vert","colour.frag");
 	m_player.setMaterial(material);
 	m_player.setUniformVec4("colour",glm::vec4(0.0f,0.5f,0.7f,1.0f));
-	m_playerPosition = glm::vec3(0.0f,0.0f,0.0f);
+	m_player.setPosition(glm::vec3(0.0f,0.0f,-2.5f));
+	m_player.setViewMatrix(glm::mat4(1.0f));
+
 	
 	/////////
 	//CAMERA
@@ -291,11 +294,11 @@ void DemoMain::update()
 			up);
 
 		m_corde->setViewMatrix(m_view);
-		m_player.setViewMatrix(glm::mat4(1.0f));
+		
 		//m_player.setViewMatrix(m_view); //- glm::mat4(glm::mat3(m_view)));
 
 		//m_player.setRotation(glm::vec3(-m_verticalAngle*180/M_PI,m_horizontalAngle*180/M_PI,0.0f));
-		m_player.setPosition(glm::vec3(0.0f,0.0f,-2.5f));
+		
 		//m_player.setPosition(m_playerPosition);
 
 		//m_player.setModelMatrix(glm::lookAt(m_playerPosition,cameraPosition,up)); fait n'importe quoi
@@ -314,7 +317,7 @@ void DemoMain::update()
 	//COLLISION DETECTION
 	/////////////////////
 	
-	handleCollisionDetection()
+	handleCollisionDetection();
 }
 
 void DemoMain::handleCollisionDetection()
@@ -385,8 +388,8 @@ void DemoMain::handleEvents()
 		}*/
 	}
 
-	if (updateTorus)
-		m_playerMesh.createTorus(m_maxRadius,m_minRadius,m_nbPointsMax,m_nbPointsMin);
+	/*if (updateTorus)
+		m_playerMesh.createTorus(m_maxRadius,m_minRadius,m_nbPointsMax,m_nbPointsMin);*/
 }
 
 void DemoMain::run()

@@ -34,7 +34,7 @@ void Mesh::init(GLuint numVerts, GLfloat* vertices, GLfloat* colours, GLfloat* n
 {
 	m_numVertices = numVerts;
 	m_numFaces = indexCount/3;
-	if(vertices != nullptr)
+	/*if(vertices != nullptr)
 	{
 		if (m_vertices != nullptr)
 			delete m_vertices;
@@ -63,7 +63,7 @@ void Mesh::init(GLuint numVerts, GLfloat* vertices, GLfloat* colours, GLfloat* n
 			delete m_faces;
 		m_faces = new GLuint[indexCount];
 		memcpy(m_faces,indices,indexCount*sizeof(GLuint));
-	}
+	}*/
 	if(m_ID == 0)
 		m_ID = tools::createMesh(numVerts, vertices, colours, normals, texcoords, indexCount, indices, dynamic);
 	else

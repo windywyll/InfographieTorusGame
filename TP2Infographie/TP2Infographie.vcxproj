@@ -92,6 +92,9 @@
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Models\testBezier.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
