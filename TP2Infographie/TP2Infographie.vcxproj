@@ -61,6 +61,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bezier.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="tools.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bezier.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="tools.cpp" />

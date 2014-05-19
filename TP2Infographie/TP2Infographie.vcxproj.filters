@@ -42,10 +42,13 @@
     <ClInclude Include="tools.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\tout et n%27importe quoi\travail\M1 STIC ISC\821 Infographie\TP2Infographie\TP2Infographie\Light.h">
+    <ClInclude Include="Light.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\tout et n%27importe quoi\travail\M1 STIC ISC\821 Infographie\TP2Infographie\TP2Infographie\ObjLoader.h">
+    <ClInclude Include="ObjLoader.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Bezier.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,10 +80,13 @@
     <ClCompile Include="tools.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\tout et n%27importe quoi\travail\M1 STIC ISC\821 Infographie\TP2Infographie\TP2Infographie\Light.cpp">
+    <ClCompile Include="Light.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\tout et n%27importe quoi\travail\M1 STIC ISC\821 Infographie\TP2Infographie\TP2Infographie\ObjLoader.cpp">
+    <ClCompile Include="ObjLoader.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Bezier.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
