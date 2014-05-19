@@ -135,6 +135,7 @@ void DemoMain::init()
 	m_corde->initShaders("colour.vert","colour.frag");
 	m_corde->setMaterial(material);
 	m_corde->setUniformVec4("colour",glm::vec4(0.5f,0.0f,0.7f,1.0f));
+	m_corde->setPosition(glm::vec3(0.0f,0.0f,-2.5f));
 
 	/////////
 	//PLAYER
@@ -245,8 +246,6 @@ void DemoMain::update()
 			m_verticalAngle -= 2*PI;
 		if(m_verticalAngle < -PI)
 			m_verticalAngle += 2*PI;
-
-		m_player.setRotation(glm::vec3(m_verticalAngle,m_verticalAngle,0.0f));
 	}
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
@@ -277,7 +276,6 @@ void DemoMain::update()
 		{
 			m_playerPosition =  m_playerPosition + glm::normalize(direction) * (float)forwardMove * m_timeElapsed * moveSpeed;
 		}
-		m_player.setPosition(m_playerPosition);
 	}
 
 	//rotate the player and the light
@@ -293,7 +291,14 @@ void DemoMain::update()
 			up);
 
 		m_corde->setViewMatrix(m_view);
-		m_player.setViewMatrix(m_view);
+		m_player.setViewMatrix(glm::mat4(1.0f));
+		//m_player.setViewMatrix(m_view); //- glm::mat4(glm::mat3(m_view)));
+
+		//m_player.setRotation(glm::vec3(-m_verticalAngle*180/M_PI,m_horizontalAngle*180/M_PI,0.0f));
+		m_player.setPosition(glm::vec3(0.0f,0.0f,-2.5f));
+		//m_player.setPosition(m_playerPosition);
+
+		//m_player.setModelMatrix(glm::lookAt(m_playerPosition,cameraPosition,up)); fait n'importe quoi
 		//m_player.setViewMatrix(glm::translate(glm::mat4(glm::mat3(m_view)), glm::vec3(direction)*2.5f)); //not for for the seeked result
 		//m_player.setModelMatrix(glm::translate(m_view,glm::normalize(direction)*2.5f)); //Teleportation while you're not seing the torus
 		//m_player.setModelMatrix(glm::transpose(m_view)); // Infinite tunnel effect
