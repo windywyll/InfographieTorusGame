@@ -166,6 +166,6 @@ void Mesh::createTorus(GLfloat maxRadius, GLfloat minRadius, GLuint nbPointsMax,
 			}
 		}
 		//std::cout << "nb faces : " << faces.size()/3 << " nb vertices : " << vertices.size()/3 << std::endl;
-		init(vertices.size()/3, vertices.data(), nullptr, normals.data(), nullptr, faces.size(), faces.data(), true);
+		init(vertices.size()/3, vertices.data(), nullptr, normals.data(), nullptr, faces.size(), faces.data(), false);
 	}
 }
