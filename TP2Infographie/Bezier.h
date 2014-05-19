@@ -24,9 +24,9 @@ class Bezier{
 
 		Bezier();
 		void loadFile(std::string filename);
-		void calcFragBezier(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3, int iLoop);
+		void calcFragBezier(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3);
 		void calcCurve(std::string filename);
-		void calcCircles(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3, glm::vec3 *center, float t, int iLoop, int iBezier);
+		void calcCircles(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3, glm::vec3 *center, float t);
 		void createListTriangles();
 		Mesh initBezierMesh();
 

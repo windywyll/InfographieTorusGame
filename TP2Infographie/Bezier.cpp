@@ -13,7 +13,7 @@ Bezier::Bezier()
 
 
 
-void Bezier::calcFragBezier(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3, int iLoop)
+void Bezier::calcFragBezier(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3)
 {
 	for(int i=0; i<m_nbPointsVoulu; i++)
 	{
@@ -23,7 +23,7 @@ void Bezier::calcFragBezier(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::ve
 		m_tabPointsCourbe.insert(m_tabPointsCourbe.end(),temp.y);
 		m_tabPointsCourbe.insert(m_tabPointsCourbe.end(),temp.z);
 
-		calcCircles(P0, P1, P2, P3, &temp, t, iLoop, i);
+		calcCircles(P0, P1, P2, P3, &temp, t);
 	}
 }
 
@@ -46,13 +46,13 @@ void Bezier::calcCurve(string filename)
 		P2 = glm::vec3(m_listPoints.at(i*9+6), m_listPoints.at(i*9+7), m_listPoints.at(i*9+8));
 		P3 = glm::vec3(m_listPoints.at(i*9+9), m_listPoints.at(i*9+10), m_listPoints.at(i*9+11));
 
-		calcFragBezier(&P0, &P1, &P2, &P3, i);
+		calcFragBezier(&P0, &P1, &P2, &P3);
 	}
 
 	createListTriangles();
 }
 
-void Bezier::calcCircles(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3, glm::vec3 *center, float t, int iLoop, int iBezier)
+void Bezier::calcCircles(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3, glm::vec3 *center, float t)
 {
 	glm::vec3 E = (*P1) - (*P0);
 	glm::vec3 F = (*P2) - (*P1);
@@ -114,15 +114,15 @@ void Bezier::createListTriangles()
 				m_tabSommetTrianglesTube.insert(m_tabSommetTrianglesTube.end(),(j + 1) + ((i+1)*m_nbPointsCircle));
 			}
 		}
+	}
 
-		int baseEndPoint = (nbCircles-1)*m_nbPointsCircle;
+	int baseEndPoint = (nbCircles-1)*m_nbPointsCircle;
 
-		for(int i=1; i<m_nbPointsCircle-1; i++)
-		{
-			m_tabSommetTrianglesTube.insert(m_tabSommetTrianglesTube.end(),baseEndPoint);
-			m_tabSommetTrianglesTube.insert(m_tabSommetTrianglesTube.end(),baseEndPoint+i);
-			m_tabSommetTrianglesTube.insert(m_tabSommetTrianglesTube.end(),baseEndPoint+i+1);
-		}
+	for(int i=1; i<m_nbPointsCircle-1; i++)
+	{
+		m_tabSommetTrianglesTube.insert(m_tabSommetTrianglesTube.end(),baseEndPoint);
+		m_tabSommetTrianglesTube.insert(m_tabSommetTrianglesTube.end(),baseEndPoint+i);
+		m_tabSommetTrianglesTube.insert(m_tabSommetTrianglesTube.end(),baseEndPoint+i+1);
 	}
 }
 
