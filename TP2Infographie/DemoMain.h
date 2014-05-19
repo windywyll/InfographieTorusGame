@@ -56,11 +56,12 @@ private :
 
 	//used for the mouse motion
 	int m_xMovementMouse, m_yMovementMouse;
-	float m_horizontalAngle, m_verticalAngle;
+	float m_horizontalAngle, m_verticalAngle,m_lastVerticalAngle ,m_lastHorizontalAngle;
 
-	glm::mat4 m_view;
+	glm::mat4 m_view, m_viewFromTorus;
 	glm::mat4 m_projection;
 
+	glm::vec3 m_direction;
 	glm::vec3 m_playerPosition;
 	glm::vec3 m_playerLastPosition;
 	BaseMeshRenderer m_player;

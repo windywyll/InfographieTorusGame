@@ -29,6 +29,9 @@ class Bezier{
 		void calcCircles(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::vec3 *P3, glm::vec3 *center, float t, int iLoop, int iBezier);
 		void createListTriangles();
 		Mesh initBezierMesh();
+
+		std::vector<GLfloat> getTabPointsCourbe(){return m_tabPointsCourbe;}
+		GLfloat getRCircle() {return m_RCircle;}
 };
 
 #endif

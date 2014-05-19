@@ -29,7 +29,7 @@ void Bezier::calcFragBezier(glm::vec3 *P0, glm::vec3 *P1, glm::vec3 *P2, glm::ve
 
 Mesh Bezier::initBezierMesh()
 {
-	m_bezierCurve.init(m_tabPointsCircles.size(), m_tabPointsCircles.data(),nullptr,m_tabNormBezier.data(),nullptr,m_tabSommetTrianglesTube.size(),m_tabSommetTrianglesTube.data(),false);
+	m_bezierCurve.init(m_tabPointsCircles.size()/3, m_tabPointsCircles.data(),nullptr,m_tabNormBezier.data(),nullptr,m_tabSommetTrianglesTube.size(),m_tabSommetTrianglesTube.data(),false);
 	return m_bezierCurve;
 }
 

@@ -252,7 +252,7 @@ void DemoMain::update()
 	}
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
-	glm::vec3 direction(
+	m_direction = glm::vec3(
 	cos(m_verticalAngle) * sin(m_horizontalAngle),
 	sin(m_verticalAngle),
 	cos(m_verticalAngle) * cos(m_horizontalAngle)
@@ -266,7 +266,7 @@ void DemoMain::update()
 	);
 
 	// Up vector : perpendicular to both direction and right
-	glm::vec3 up = glm::cross( right, direction );
+	glm::vec3 up = glm::cross( right, m_direction );
 
 	if(sideMove != 0 || forwardMove!= 0)//if a key is pressed
 	{
@@ -277,7 +277,7 @@ void DemoMain::update()
 		}
 		if(forwardMove!= 0)
 		{
-			m_playerPosition =  m_playerPosition + glm::normalize(direction) * (float)forwardMove * m_timeElapsed * moveSpeed;
+			m_playerPosition =  m_playerPosition + glm::normalize(m_direction) * (float)forwardMove * m_timeElapsed * moveSpeed;
 		}
 	}
 
@@ -285,12 +285,16 @@ void DemoMain::update()
 
 	//camera position : the player position, less 2.5 times the direction vector (2.5 is an arbitrary value) and
 	//we put the camera a little higher with yShift to see better around the character
-	glm::vec3 cameraPosition = m_playerPosition - glm::normalize(direction)*2.5f;
+	glm::vec3 cameraPosition = m_playerPosition - glm::normalize(m_direction)*2.5f;
 
 	if(m_xMovementMouse != 0 || m_yMovementMouse != 0 || sideMove != 0 || forwardMove!= 0)//if nothing have changed, we don't change the view matrix
 	{
 		m_view = glm::lookAt(cameraPosition,// Camera is here
 			m_playerPosition, // and looks here : at the same position, plus "direction"
+			up);
+
+		m_viewFromTorus = glm::lookAt(m_playerPosition,// Torus is here
+			cameraPosition, // and looks here : at the same position, plus "direction"
 			up);
 
 		m_corde->setViewMatrix(m_view);
@@ -310,18 +314,41 @@ void DemoMain::update()
 		m_xMovementMouse = 0;
 		m_yMovementMouse = 0;
 	}
-
-	m_playerLastPosition = m_playerPosition;
 	
 	/////////////////////
 	//COLLISION DETECTION
 	/////////////////////
 	
 	handleCollisionDetection();
+
+	//////
+	//END
+	//////
+
+	m_playerLastPosition = m_playerPosition;
+	m_lastVerticalAngle = m_verticalAngle;
+	m_lastHorizontalAngle = m_horizontalAngle;
 }
 
 void DemoMain::handleCollisionDetection()
 {
+	std::vector<GLfloat> curve = m_bezierCorde.getTabPointsCourbe();
+	float e = m_bezierCorde.getRCircle();
+	for(int i = 0; i < curve.size()/3; i ++)
+	{
+		glm::vec3 point(curve[i*3],curve[i*3+1],curve[i*3+2]);
+		//point = point + glm::normalize(m_direction)*2.5f;
+		//placement du point dans l'espace de la camera, cependant, il faudrait le placer dans l'espace du torus qui n'est pas le même !
+		point = glm::vec3(m_viewFromTorus*m_corde->getModelMatrix()*glm::vec4(point,1.0f));
+		float x = point.x, y = point.y, z = point.z;
+		if(x * x + y * y + z * z - 2*m_maxRadius * sqrt(x * x + y * y ) + m_maxRadius - (m_minRadius + e) * (m_minRadius + e) <= 0)
+		{
+			m_playerPosition = m_playerLastPosition;
+			m_verticalAngle = m_lastVerticalAngle;
+			m_horizontalAngle = m_lastHorizontalAngle;
+			break;
+		}
+	}
 }
 
 void DemoMain::handleEvents()
@@ -344,12 +371,16 @@ void DemoMain::handleEvents()
 				SDL_WarpMouseInWindow(m_window,m_windowWidth/2,m_windowHeight/2);
 			}
 		}
-		/*if (sdlEvent.type == SDL_KEYDOWN)
+		if (sdlEvent.type == SDL_KEYDOWN)
 		{
 			// Can extend this to handle a wider range of keys
 			switch( sdlEvent.key.keysym.sym )
 			{
-				case SDLK_UP:
+			case SDLK_r:
+				m_playerPosition = glm::vec3(0.0f,0.0f,0.0f);
+				m_horizontalAngle = 0.0f;
+				m_verticalAngle = 0.0f;
+				/*case SDLK_UP:
 					m_maxRadius += 0.1f;
 					updateTorus = true;
 					break;
@@ -380,12 +411,12 @@ void DemoMain::handleEvents()
 				case SDLK_l:
 					m_nbPointsMin ++;
 					updateTorus = true;
-					break;
+					break;*/
 					
 				default:
 					break;
 			}
-		}*/
+		}
 	}
 
 	/*if (updateTorus)
