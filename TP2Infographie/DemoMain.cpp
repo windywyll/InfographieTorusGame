@@ -314,7 +314,7 @@ void DemoMain::update()
 	//COLLISION DETECTION
 	/////////////////////
 	
-	handleCollisionDetection()
+	handleCollisionDetection();
 }
 
 void DemoMain::handleCollisionDetection()
