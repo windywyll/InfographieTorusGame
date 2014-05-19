@@ -314,6 +314,7 @@ void DemoMain::update()
 	//COLLISION DETECTION
 	/////////////////////
 	
+	handleCollisionDetection()
 }
 
 void DemoMain::handleCollisionDetection()
@@ -340,7 +341,7 @@ void DemoMain::handleEvents()
 				SDL_WarpMouseInWindow(m_window,m_windowWidth/2,m_windowHeight/2);
 			}
 		}
-		if (sdlEvent.type == SDL_KEYDOWN)
+		/*if (sdlEvent.type == SDL_KEYDOWN)
 		{
 			// Can extend this to handle a wider range of keys
 			switch( sdlEvent.key.keysym.sym )
@@ -381,7 +382,7 @@ void DemoMain::handleEvents()
 				default:
 					break;
 			}
-		}
+		}*/
 	}
 
 	if (updateTorus)
